@@ -44,9 +44,9 @@ public class ComplaintService {
     }
 
     public void deleteComplaint(long id) {
-        Complaint post = complaintRepository.findById(id)
+        Complaint user = complaintRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException());
         //TODO: Create a new exception
-        complaintRepository.delete(post);
+        complaintRepository.delete(user);
     }
 }

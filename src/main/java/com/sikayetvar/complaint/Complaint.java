@@ -29,9 +29,11 @@ public class Complaint {
     @Column(name="title", nullable = false)
     private String title;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="user_id")
     private User user;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="company_id")
     private Company company;
 }

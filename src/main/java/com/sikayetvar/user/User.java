@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.HashSet;
+
 import java.util.Set;
 
 @Table(name="user")
@@ -18,7 +18,6 @@ import java.util.Set;
 @ToString // Defines a meaningful toString implementation of this class
 @NoArgsConstructor // Defines the default constructor
 public class User {
-
     @Id // Marks the "id" field as the identifier of this entity
     @GeneratedValue(strategy = GenerationType.AUTO) // The "id" field is to be generated automatically
     @Column(name="id", nullable = false, unique = true, insertable = false, updatable = false)
@@ -33,9 +32,10 @@ public class User {
     @Column(name="last_name")
     private String lastName;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private Set<Complaint> complaints;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    //TODO: pass password on different call?
 }

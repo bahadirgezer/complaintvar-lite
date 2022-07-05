@@ -1,10 +1,13 @@
 package com.sikayetvar.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    public Optional<User> findByEmail(String email);
-    public Optional<User> findById(Long Id);
+    @Query("SELECT u FROM User u WHERE u.id=?1")
+    public Optional<User> findUserByID(Long Id);
+    @Query("SELECT u FROM User u WHERE u.email=?1")
+    public Optional<User> findUserByEmail(String email);
 }

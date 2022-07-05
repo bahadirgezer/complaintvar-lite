@@ -34,7 +34,6 @@ public class ComplaintController {
 
         // convert entity to DTO
         ComplaintDTO complaintResponse = modelMapper.map(complaint, ComplaintDTO.class);
-
         return ResponseEntity.ok().body(complaintResponse);
     }
 
@@ -52,7 +51,6 @@ public class ComplaintController {
 
         // convert DTO to entity
         Complaint complaintRequest = modelMapper.map(complaintDTO, Complaint.class);
-
         Complaint complaint = complaintService.createComplaint(complaintRequest);
 
         // convert entity to DTO
@@ -85,8 +83,13 @@ public class ComplaintController {
     }
 
     //TODO: adding response to delete might be better
-    @DeleteMapping
-    public void deleteComplaint(@PathVariable(name = "id") Long id) {
+    @DeleteMapping("/{id}")
+    public void deleteComplaintByPath(@PathVariable(name = "id") Long id) {
+        complaintService.deleteComplaint(id);
+    }
+
+    @DeleteMapping(params = "id")
+    public void deleteComplaintByParam(@RequestParam Long id) {
         complaintService.deleteComplaint(id);
     }
 }

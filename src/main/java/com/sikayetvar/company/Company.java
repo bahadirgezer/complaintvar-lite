@@ -1,5 +1,6 @@
 package com.sikayetvar.company;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sikayetvar.complaint.Complaint;
 import com.sikayetvar.user.User;
 import lombok.Getter;
@@ -29,7 +30,10 @@ public class Company {
     @Column(name="name", nullable = false, unique = false)
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "complaint")
     private Set<Complaint> complaints;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+    //TODO: pass password on different call?
 }
