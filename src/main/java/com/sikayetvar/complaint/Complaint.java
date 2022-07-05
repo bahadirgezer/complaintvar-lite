@@ -1,6 +1,8 @@
 package com.sikayetvar.complaint;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sikayetvar.company.Company;
+import com.sikayetvar.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,4 +28,10 @@ public class Complaint {
 
     @Column(name="title", nullable = false)
     private String title;
+
+    @OneToOne
+    private User user;
+
+    @OneToOne
+    private Company company;
 }
