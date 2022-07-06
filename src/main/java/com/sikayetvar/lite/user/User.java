@@ -2,13 +2,11 @@ package com.sikayetvar.lite.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sikayetvar.lite.complaint.Complaint;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Table(name="USER")
@@ -17,6 +15,7 @@ import java.util.Set;
 @Setter // Defines the setter methods of the member fields
 @ToString // Defines a meaningful toString implementation of this class
 @NoArgsConstructor // Defines the default constructor
+@AllArgsConstructor
 public class User {
     @Id // Marks the "id" field as the identifier of this entity
     @GeneratedValue(strategy = GenerationType.AUTO) // The "id" field is to be generated automatically
@@ -33,7 +32,7 @@ public class User {
     private String lastName;
 
     @OneToMany(mappedBy = "user")
-    private Set<Complaint> complaints;
+    private Set<Complaint> complaints = new HashSet<Complaint>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;

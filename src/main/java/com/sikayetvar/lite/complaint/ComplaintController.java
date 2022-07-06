@@ -1,5 +1,6 @@
 package com.sikayetvar.lite.complaint;
 
+import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,12 +47,12 @@ public class ComplaintController {
         return ResponseEntity.ok().body(complaintResponse);
     }
 
-    @PostMapping
-    public ResponseEntity<ComplaintDTO> createComplaint(@RequestBody ComplaintDTO complaintDTO) {
+    @PostMapping(params = {"user", "company"})
+    public ResponseEntity<ComplaintDTO> createComplaint(@RequestBody ComplaintDTO complaintDTO, @RequestParam Long user, @RequestParam Long company) {
 
         // convert DTO to entity
         Complaint complaintRequest = modelMapper.map(complaintDTO, Complaint.class);
-        Complaint complaint = complaintService.createComplaint(complaintRequest);
+        Complaint complaint = complaintService.createComplaint(complaintRequest, user, company);
 
         // convert entity to DTO
         ComplaintDTO complaintResponse = modelMapper.map(complaint, ComplaintDTO.class);
@@ -92,4 +93,10 @@ public class ComplaintController {
     public void deleteComplaintByParam(@RequestParam Long id) {
         complaintService.deleteComplaint(id);
     }
+}
+
+@Data
+class ComplaintForm {
+    private Long user_id;
+    private Long company_id;
 }

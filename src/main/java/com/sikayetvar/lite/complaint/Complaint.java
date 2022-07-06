@@ -2,10 +2,7 @@ package com.sikayetvar.lite.complaint;
 
 import com.sikayetvar.lite.company.Company;
 import com.sikayetvar.lite.user.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +13,7 @@ import javax.persistence.*;
 @Setter // Defines the setter methods of the member fields
 @ToString // Defines a meaningful toString implementation of this class
 @NoArgsConstructor // Defines the default constructor
+@AllArgsConstructor
 public class Complaint {
     @Id // Marks the "id" field as the identifier of this entity
     @GeneratedValue(strategy = GenerationType.AUTO) // The "id" field is to be generated automatically

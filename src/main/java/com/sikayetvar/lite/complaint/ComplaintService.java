@@ -1,17 +1,21 @@
 package com.sikayetvar.lite.complaint;
 
+import com.sikayetvar.lite.company.Company;
+import com.sikayetvar.lite.company.CompanyRepository;
+import com.sikayetvar.lite.user.User;
+import com.sikayetvar.lite.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ComplaintService {
     private final ComplaintRepository complaintRepository;
-
-    public ComplaintService(ComplaintRepository complaintRepository) {
-        this.complaintRepository = complaintRepository;
-    }
+    private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
 
     public List<Complaint> getAllComplaints() {
         return complaintRepository.findAll();
@@ -26,9 +30,23 @@ public class ComplaintService {
         return complaintByID.get();
     }
 
-    public Complaint createComplaint(Complaint complaintRequest) {
-        //TODO:add exception logic
-        return complaintRepository.save(complaintRequest); //should not save request
+    public Complaint createComplaint(Complaint complaintRequest, Long user, Long company) {
+        complaintRequest.setCompany(companyRepository.findCompanyByID(company)
+                .orElseThrow(() -> new IllegalArgumentException()));
+        complaintRequest.setUser(userRepository.findUserByID(user)
+                .orElseThrow(() -> new IllegalArgumentException()));
+        return complaintRepository.save(complaintRequest);
+    }
+
+    public Complaint linkUserAndCompany(Complaint complaint, Long user_id, Long company_id) {
+        Company company = companyRepository.findCompanyByID(company_id)
+                .orElseThrow(() -> new IllegalArgumentException());
+        User user = userRepository.findUserByID(user_id)
+                .orElseThrow(() -> new IllegalArgumentException());
+        //TODO: should add more logic
+        complaint.setUser(user);
+        complaint.setCompany(company);
+        return complaintRepository.save(complaint);
     }
 
     public Complaint updateComplaint(long id, Complaint complaintRequest) {

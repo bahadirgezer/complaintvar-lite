@@ -3,12 +3,10 @@ package com.sikayetvar.lite.company;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sikayetvar.lite.complaint.Complaint;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -18,6 +16,7 @@ import java.util.Set;
 @Setter // Defines the setter methods of the member fields
 @ToString // Defines a meaningful toString implementation of this class
 @NoArgsConstructor // Defines the default constructor
+@AllArgsConstructor
 public class Company {
     @Id // Marks the "id" field as the identifier of this entity
     @GeneratedValue(strategy = GenerationType.AUTO) // The "id" field is to be generated automatically
@@ -31,8 +30,8 @@ public class Company {
     private String name;
 
     @JsonIgnore //recursive problem
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "company")
-    private Set<Complaint> complaints;
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "company")
+    private Set<Complaint> complaints = new HashSet<Complaint>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
