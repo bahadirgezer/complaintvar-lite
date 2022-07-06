@@ -1,4 +1,4 @@
-package com.sikayetvar.security;
+package com.sikayetvar.lite.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

@@ -1,7 +1,5 @@
-package com.sikayetvar.company;
+package com.sikayetvar.lite.company;
 
-import com.sikayetvar.complaint.Complaint;
-import com.sikayetvar.complaint.ComplaintDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +19,11 @@ public class CompanyController {
 
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;
+    }
+
+    @GetMapping(path="/test")
+    public String pingTest() {
+        return "Ping test successfull";
     }
 
     @GetMapping

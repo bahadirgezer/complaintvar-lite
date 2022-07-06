@@ -1,4 +1,4 @@
-package com.sikayetvar.complaint;
+package com.sikayetvar.lite.complaint;
 
 import org.springframework.stereotype.Service;
 

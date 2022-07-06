@@ -1,4 +1,4 @@
-package com.sikayetvar.company;
+package com.sikayetvar.lite.company;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,4 +1,4 @@
-package com.sikayetvar.complaint;
+package com.sikayetvar.lite.complaint;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

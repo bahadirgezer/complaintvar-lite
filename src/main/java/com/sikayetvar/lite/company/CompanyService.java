@@ -1,4 +1,4 @@
-package com.sikayetvar.company;
+package com.sikayetvar.lite.company;
 
 import org.springframework.stereotype.Service;
 

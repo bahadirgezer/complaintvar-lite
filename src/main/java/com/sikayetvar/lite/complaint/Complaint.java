@@ -1,8 +1,7 @@
-package com.sikayetvar.complaint;
+package com.sikayetvar.lite.complaint;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sikayetvar.company.Company;
-import com.sikayetvar.user.User;
+import com.sikayetvar.lite.company.Company;
+import com.sikayetvar.lite.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import lombok.ToString;
 import javax.persistence.*;
 
 
-@Table(name="complaint")
+@Table(name="COMPLAINT")
 @Entity // Marks this class as an Entity
 @Getter // Defines the getter methods of the member fields
 @Setter // Defines the setter methods of the member fields
@@ -29,11 +28,11 @@ public class Complaint {
     @Column(name="title", nullable = false)
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name="company_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="company_id", referencedColumnName = "id")
     private Company company;
 }
