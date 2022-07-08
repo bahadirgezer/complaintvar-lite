@@ -1,4 +1,4 @@
-package com.sikayetvar.lite.user;
+package com.s_var.lite.user;
 
 import lombok.Data;
 

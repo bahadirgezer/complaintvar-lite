@@ -1,4 +1,4 @@
-package com.sikayetvar.lite;
+package com.s_var.lite;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;

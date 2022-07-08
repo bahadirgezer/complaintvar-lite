@@ -1,4 +1,4 @@
-package com.sikayetvar.lite.company;
+package com.s_var.lite.company;
 
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,8 @@ public class CompanyService {
 
     public Company updateCompany(Long id, Company companyRequest) {
         Company company = companyRepository.findCompanyByID(id)
-                .orElseThrow(() -> new IllegalArgumentException());
+
+                .orElseThrow(() -> new IllegalArgumentException()); //context specific exception
 
         company.setEmail(companyRequest.getEmail()); //TODO: add logic
         company.setName(companyRequest.getName());

@@ -1,4 +1,4 @@
-package com.sikayetvar.lite.security;
+package com.s_var.lite.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -7,9 +7,13 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 public class JWTUtil {
@@ -19,12 +23,22 @@ public class JWTUtil {
     private String secret;
 
     // Sign and create a JWT using the injected secret
-    public String generateToken(String email) throws IllegalArgumentException, JWTCreationException {
+    public String generateToken(User user) throws IllegalArgumentException, JWTCreationException {
         return JWT.create()
-                .withSubject("User Details")
-                .withClaim("email", email)
+                .withSubject(user.getUsername())
+                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .withExpiresAt(new Date(System.currentTimeMillis()+ 10 * 60 * 1000)) //10 mins
                 .withIssuedAt(new Date())
-                .withIssuer("YOUR APPLICATION/PROJECT/COMPANY NAME")
+                .withIssuer("sikayetvar-lite")
+                .sign(Algorithm.HMAC256(secret));
+    }
+
+    public String generateRefreshToken(User user) throws IllegalArgumentException, JWTCreationException {
+        return JWT.create()
+                .withSubject(user.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis()+ 30 * 60 * 1000)) //30 mins
+                .withIssuedAt(new Date())
+                .withIssuer("sikayetvar-lite")
                 .sign(Algorithm.HMAC256(secret));
     }
 

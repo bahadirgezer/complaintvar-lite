@@ -1,4 +1,4 @@
-package com.sikayetvar.lite.company;
+package com.s_var.lite.company;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,19 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
+    /**
+     * T1: <ne yaptiginin acikalmasi></ne>
+     * @return
+     */
     @GetMapping(path="/test")
     public String pingTest() {
         return "Ping test successfull";
     }
 
+    /**
+     * B1 : Brand 1
+     * @return
+     */
     @GetMapping
     public List<CompanyDTO> getAllCompanies() {
         return companyService.getAllCompanies()
@@ -33,8 +41,13 @@ public class CompanyController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * C1:
+     * @param id company id
+     * @return
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<CompanyDTO> getCompanyByPath(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<CompanyDTO> getCompanyByPath(@PathVariable Long id) {
         Company company = companyService.getCompanyByID(id);
 
         CompanyDTO companyResponse = modelMapper.map(company, CompanyDTO.class);

@@ -1,7 +1,7 @@
-package com.sikayetvar.lite.complaint;
+package com.s_var.lite.complaint;
 
-import com.sikayetvar.lite.company.Company;
-import com.sikayetvar.lite.user.User;
+import com.s_var.lite.user.User;
+import com.s_var.lite.company.Company;
 import lombok.Data;
 
 @Data

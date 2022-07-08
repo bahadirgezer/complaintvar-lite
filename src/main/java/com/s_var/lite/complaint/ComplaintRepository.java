@@ -1,4 +1,4 @@
-package com.sikayetvar.lite.complaint;
+package com.s_var.lite.complaint;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

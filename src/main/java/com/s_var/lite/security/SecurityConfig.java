@@ -1,6 +1,6 @@
-package com.sikayetvar.lite.security;
+package com.s_var.lite.security;
 
-import com.sikayetvar.lite.user.UserRepository;
+import com.s_var.lite.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -29,7 +31,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception { // Method to configure your app security
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().anyRequest().permitAll(); //everyone should access this application
+        http.authorizeRequests().antMatchers(GET, "api/user/**", "api/company/**", "api/complaint/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(POST, "api/user/**", "api/company/**").hasAnyAuthority("ROLE_ADMIN");
+        //http.authorizeRequests().antMatchers(POST, "api/complaint").hasAnyAuthority("ROLE_ADMIN"); // users can post a request only on their behalf
+        http.authorizeRequests().anyRequest().authenticated();
+        //http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(new JWTAuthenticationFilter(authenticationManagerBean()));
     }
 

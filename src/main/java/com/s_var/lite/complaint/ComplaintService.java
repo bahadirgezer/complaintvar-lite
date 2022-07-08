@@ -1,9 +1,9 @@
-package com.sikayetvar.lite.complaint;
+package com.s_var.lite.complaint;
 
-import com.sikayetvar.lite.company.Company;
-import com.sikayetvar.lite.company.CompanyRepository;
-import com.sikayetvar.lite.user.User;
-import com.sikayetvar.lite.user.UserRepository;
+import com.s_var.lite.company.CompanyRepository;
+import com.s_var.lite.user.User;
+import com.s_var.lite.user.UserRepository;
+import com.s_var.lite.company.Company;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

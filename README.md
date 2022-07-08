@@ -1,2 +1,2 @@
-# sikayetvar-lite
-Java Spring backend project for my internship at Sikayetvar
+# s_var-lite
+Java Spring backend project for my internship

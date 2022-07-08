@@ -1,4 +1,4 @@
-package com.sikayetvar.lite.company;
+package com.s_var.lite.company;
 
 import lombok.Data;
 

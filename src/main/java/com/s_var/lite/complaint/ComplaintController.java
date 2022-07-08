@@ -1,6 +1,5 @@
-package com.sikayetvar.lite.complaint;
+package com.s_var.lite.complaint;
 
-import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -93,10 +92,4 @@ public class ComplaintController {
     public void deleteComplaintByParam(@RequestParam Long id) {
         complaintService.deleteComplaint(id);
     }
-}
-
-@Data
-class ComplaintForm {
-    private Long user_id;
-    private Long company_id;
 }
