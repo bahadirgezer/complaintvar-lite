@@ -1,5 +1,6 @@
-package com.s_var.lite.user;
+package com.complaintvar.lite.repository;
 
+import com.complaintvar.lite.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

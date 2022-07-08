@@ -1,4 +1,4 @@
-package com.s_var.lite.company;
+package com.complaintvar.lite.dto;
 
 import lombok.Data;
 

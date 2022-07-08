@@ -1,4 +1,4 @@
-package com.s_var.lite;
+package com.complaintvar.lite;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

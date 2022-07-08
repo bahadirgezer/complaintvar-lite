@@ -1,5 +1,7 @@
-package com.s_var.lite.company;
+package com.complaintvar.lite.service;
 
+import com.complaintvar.lite.entity.Company;
+import com.complaintvar.lite.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

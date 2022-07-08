@@ -1,5 +1,7 @@
-package com.s_var.lite.user;
+package com.complaintvar.lite.service;
 
+import com.complaintvar.lite.entity.User;
+import com.complaintvar.lite.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

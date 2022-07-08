@@ -1,4 +1,4 @@
-package com.s_var.lite.security;
+package com.complaintvar.lite.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

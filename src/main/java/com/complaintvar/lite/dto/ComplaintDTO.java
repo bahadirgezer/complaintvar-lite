@@ -1,7 +1,7 @@
-package com.s_var.lite.complaint;
+package com.complaintvar.lite.dto;
 
-import com.s_var.lite.user.User;
-import com.s_var.lite.company.Company;
+import com.complaintvar.lite.entity.User;
+import com.complaintvar.lite.entity.Company;
 import lombok.Data;
 
 @Data

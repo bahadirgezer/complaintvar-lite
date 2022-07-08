@@ -1,4 +1,4 @@
-package com.s_var.lite.user;
+package com.complaintvar.lite.dto;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.s_var.lite.security;
+package com.complaintvar.lite.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

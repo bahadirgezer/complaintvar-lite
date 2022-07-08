@@ -1,7 +1,5 @@
-package com.s_var.lite.complaint;
+package com.complaintvar.lite.entity;
 
-import com.s_var.lite.company.Company;
-import com.s_var.lite.user.User;
 import lombok.*;
 
 import javax.persistence.*;

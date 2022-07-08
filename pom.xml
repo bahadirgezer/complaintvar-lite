@@ -8,7 +8,7 @@
         <version>2.7.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.s_var</groupId>
+    <groupId>com.complaintvar</groupId>
     <artifactId>lite</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>lite</name>

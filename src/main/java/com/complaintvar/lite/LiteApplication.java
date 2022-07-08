@@ -1,4 +1,4 @@
-package com.s_var.lite;
+package com.complaintvar.lite;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;

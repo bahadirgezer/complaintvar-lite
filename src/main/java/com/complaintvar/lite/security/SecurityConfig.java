@@ -1,6 +1,6 @@
-package com.s_var.lite.security;
+package com.complaintvar.lite.security;
 
-import com.s_var.lite.user.UserRepository;
+import com.complaintvar.lite.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

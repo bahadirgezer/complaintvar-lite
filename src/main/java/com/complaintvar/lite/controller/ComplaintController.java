@@ -1,5 +1,8 @@
-package com.s_var.lite.complaint;
+package com.complaintvar.lite.controller;
 
+import com.complaintvar.lite.dto.ComplaintDTO;
+import com.complaintvar.lite.service.ComplaintService;
+import com.complaintvar.lite.entity.Complaint;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

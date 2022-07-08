@@ -1,5 +1,6 @@
-package com.s_var.lite.complaint;
+package com.complaintvar.lite.repository;
 
+import com.complaintvar.lite.entity.Complaint;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
