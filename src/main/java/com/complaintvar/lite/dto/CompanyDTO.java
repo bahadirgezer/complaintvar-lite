@@ -1,11 +1,14 @@
 package com.complaintvar.lite.dto;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompanyDTO {
-    private Long id;
-    private String email;
-    private String name;
-    private String category;
+    Long id;
+    String email;
+    String name;
+    Boolean verified;
 }

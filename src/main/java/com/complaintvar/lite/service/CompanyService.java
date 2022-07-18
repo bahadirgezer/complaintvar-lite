@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CompanyService {
     private final CompanyRepository companyRepository;
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -67,7 +67,7 @@ public class CompanyService {
             log.debug("Database query exception caught.");
             return null;
         }
-        log.debug(String.format("Fetched company with ID: %d", emailCheck.getId()));
+        log.debug("Fetched company");
 
         if (emailCheck != null) {
             log.debug("Email in use by another company.");
@@ -176,5 +176,9 @@ public class CompanyService {
         }
 
         return true;
+    }
+
+    public void updateEveryVerification(Boolean verification) {
+        companyRepository.updateEveryVerification(verification);
     }
 }

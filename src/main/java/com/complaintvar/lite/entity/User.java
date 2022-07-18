@@ -1,5 +1,6 @@
 package com.complaintvar.lite.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.complaintvar.lite.entity.Complaint;
 import lombok.*;
@@ -31,6 +32,7 @@ public class User {
     @Column(name="last_name")
     private String lastName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Complaint> complaints = new HashSet<Complaint>();
 

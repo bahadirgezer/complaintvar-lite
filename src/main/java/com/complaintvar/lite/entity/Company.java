@@ -31,7 +31,7 @@ public class Company {
     private String name;
 
     @Column
-    private String category;
+    private Boolean verified;
 
     @JsonIgnore //recursive problem
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "company")

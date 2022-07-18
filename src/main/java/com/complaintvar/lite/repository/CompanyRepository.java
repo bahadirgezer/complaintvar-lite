@@ -11,7 +11,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Company findCompanyByID(Long Id);
     @Query("SELECT co FROM Company co WHERE co.email=?1")
     Company findCompanyByEmail(String email);
-
-    @Query(value = "UPDATE company SET category = 'defaulted'", nativeQuery = true)
-    void updateAllRows();
+    @Query(value = "UPDATE sikayetvar_lite.company SET sikayetvar_lite.company.verified=?1 WHERE *", nativeQuery = true)
+    void updateEveryVerification(Boolean verification);
 }

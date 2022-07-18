@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Locale;
 
 @Slf4j
 @RestController
@@ -77,5 +79,17 @@ public class CompanyController {
     @DeleteMapping(params = "id")
     public HttpStatus deleteCompanyByParam(@RequestParam Long id) {
         return companyService.deleteCompany(id) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE;
+    }
+
+    @PutMapping("/all")
+    public HttpStatus updateEveryVerification(@RequestParam String verification) {
+        if (verification.equalsIgnoreCase("true")) {
+            companyService.updateEveryVerification(true);
+        } else if (verification.equalsIgnoreCase("false")) {
+            companyService.updateEveryVerification(false);
+        } else {
+            return HttpStatus.NOT_ACCEPTABLE;
+        }
+        return HttpStatus.ACCEPTED;
     }
 }
