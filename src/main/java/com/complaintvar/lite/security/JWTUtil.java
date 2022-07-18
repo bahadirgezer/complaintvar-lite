@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class JWTUtil {
+    /*
 
     // Injects the jwt-secret property set in the resources/application.properties file
     @Value("${jwt-secret}")
@@ -51,4 +52,5 @@ public class JWTUtil {
         DecodedJWT jwt = verifier.verify(token);
         return jwt.getClaim("email").asString();
     }
+     */
 }

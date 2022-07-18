@@ -1,18 +1,20 @@
 package com.complaintvar.lite.entity;
 
+import com.complaintvar.lite.dto.CompanyDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.complaintvar.lite.entity.Complaint;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 
-@Table(name="COMPANY")
+@Table(name="company")
 @Entity // Marks this class as an Entity
-@Data //getter setter tostring
+@Data //getter setter toString
 @NoArgsConstructor // Defines the default constructor
 @AllArgsConstructor
 
@@ -22,11 +24,14 @@ public class Company {
     @Column(name="id", nullable = false, unique = true, insertable = false, updatable = false)
     private Long id;
 
-    @Column(name="email", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name="name", nullable = false, unique = false)
+    @Column(nullable = false, unique = false)
     private String name;
+
+    @Column
+    private String category;
 
     @JsonIgnore //recursive problem
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "company")

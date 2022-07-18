@@ -1,12 +1,15 @@
 package com.complaintvar.lite.dto;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDTO {
-    private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
+    Long id;
+    String email;
+    String firstName;
+    String lastName;
 }
 

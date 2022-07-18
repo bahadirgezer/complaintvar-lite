@@ -1,87 +1,83 @@
 package com.complaintvar.lite.controller;
 
-import com.complaintvar.lite.entity.User;
 import com.complaintvar.lite.dto.UserDTO;
+import com.complaintvar.lite.exceptions.ResourceNotFoundException;
 import com.complaintvar.lite.service.UserService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/user")
 public class UserController {
     //TODO: add methods for email
-    @Autowired
-    private ModelMapper modelMapper;
     private UserService userService;
-
-    public UserController(UserService userService) { this.userService = userService; }
-
-    @GetMapping
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers()
-                .stream().map(user -> modelMapper.map(user, UserDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/id")
-    public ResponseEntity<UserDTO> getUserByPath(@PathVariable(name = "id") Long id) {
-        User user = userService.getUserByID(id);
-
-        UserDTO userResponse = modelMapper.map(user, UserDTO.class);
-        return ResponseEntity.ok().body(userResponse);
+    
+    //TODO: Pagination
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserByPath(@PathVariable Long id) {
+        return getUser(id);
     }
 
     @GetMapping(params = "id")
     public ResponseEntity<UserDTO> getUserByParam(@RequestParam Long id) {
-        User user = userService.getUserByID(id);
+        return getUser(id);
+    }
 
-        UserDTO userResponse = modelMapper.map(user, UserDTO.class);
-        return ResponseEntity.ok().body(userResponse);
+    private ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
+        log.info(String.format("Getting user with id: %d"), id);
+        UserDTO userDTO = userService.getUserByID(id);
+        if (userDTO == null) {
+            log.debug("UserDTO object is null.");
+            throw new ResourceNotFoundException("Cannot get user. Null return.");
+        }
+        return ResponseEntity.ok().body(userDTO);
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        User userRequest = modelMapper.map(userDTO, User.class);
-        User user = userService.createUser(userRequest);
-
-        UserDTO userResponse = modelMapper.map(user, UserDTO.class);
-        return new ResponseEntity<UserDTO>(userResponse, HttpStatus.CREATED);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO newUserDTO) {
+        log.info("Creating new user");
+        UserDTO userDTO = userService.createUser(newUserDTO);
+        if (userDTO == null) {
+            log.debug("UserDTO object is null.");
+            throw new ResourceNotFoundException("Cannot get user. Null return.");
+        }
+        return new ResponseEntity<UserDTO>(userDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUserByPath(@PathVariable(name = "id") Long id, @RequestBody UserDTO userDTO) {
-        User userRequest = modelMapper.map(userDTO, User.class);
-        User user = userService.updateComplaint(id, userRequest);
-
-        //covert updated entity back to DTO for posting
-        UserDTO userResponse = modelMapper.map(user, UserDTO.class);
-        return ResponseEntity.ok().body(userResponse);
+    public ResponseEntity<UserDTO> updateUserByPath(@PathVariable(name = "id") Long id, @RequestBody UserDTO newUserDTO) {
+        return updateUser(id, newUserDTO);
     }
+
 
     @PutMapping(params = "id")
-    public ResponseEntity<UserDTO> updateUserByParam(@RequestParam Long id, @RequestBody UserDTO userDTO) {
-        User userRequest = modelMapper.map(userDTO, User.class);
-        User user = userService.updateComplaint(id, userRequest);
-
-        //covert updated entity back to DTO for posting
-        UserDTO userResponse = modelMapper.map(user, UserDTO.class);
-        return ResponseEntity.ok().body(userResponse);
+    public ResponseEntity<UserDTO> updateUserByParam(@RequestParam Long id, @RequestBody UserDTO newUserDTO) {
+        return updateUser(id, newUserDTO);
     }
 
-    //TODO: adding response to delete might be better
+    private ResponseEntity<UserDTO> updateUser(@PathVariable(name = "id") Long id, @RequestBody UserDTO newUserDTO) {
+        log.info(String.format("Updating user with id: %d"), id);
+        UserDTO userDTO = userService.updateUser(id, newUserDTO);
+        if (userDTO == null) {
+            log.debug("UserDTO object is null.");
+            throw new ResourceNotFoundException("Cannot get user. Null return.");
+        }
+        return new ResponseEntity<UserDTO>(userDTO, HttpStatus.ACCEPTED);
+    }
+
     @DeleteMapping("/{id}")
-    public void deleteUserByPath(@PathVariable(name = "id") Long id) {
-        userService.deleteUser(id);
+    public HttpStatus deleteUserByPath(@PathVariable(name = "id") Long id) {
+        return userService.deleteUser(id) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE;
     }
 
     @DeleteMapping(params = "id")
-    public void deleteUserByParam(@RequestParam Long id) {
-        userService.deleteUser(id);
+    public HttpStatus deleteUserByParam(@RequestParam Long id) {
+        return userService.deleteUser(id) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE;
     }
 }

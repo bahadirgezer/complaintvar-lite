@@ -8,7 +8,10 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("SELECT co FROM Company co WHERE co.id=?1")
-    public Optional<Company> findCompanyByID(Long Id);
+    Company findCompanyByID(Long Id);
     @Query("SELECT co FROM Company co WHERE co.email=?1")
-    public Optional<Company> findCompanyByEmail(String email);
+    Company findCompanyByEmail(String email);
+
+    @Query(value = "UPDATE company SET category = 'defaulted'", nativeQuery = true)
+    void updateAllRows();
 }

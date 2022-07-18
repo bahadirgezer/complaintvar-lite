@@ -1,105 +1,81 @@
 package com.complaintvar.lite.controller;
 
 import com.complaintvar.lite.dto.CompanyDTO;
+import com.complaintvar.lite.exceptions.ResourceNotFoundException;
 import com.complaintvar.lite.service.CompanyService;
-import com.complaintvar.lite.entity.Company;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/company")
 public class CompanyController {
+    private final CompanyService companyService;
 
-    @Autowired
-    private ModelMapper modelMapper;
-    private CompanyService companyService;
-
-    public CompanyController(CompanyService companyService) {
-        this.companyService = companyService;
-    }
-
-    /**
-     * T1: <ne yaptiginin acikalmasi></ne>
-     * @return
-     */
-    @GetMapping(path="/test")
-    public String pingTest() {
-        return "Ping test successfull";
-    }
-
-    /**
-     * B1 : Brand 1
-     * @return
-     */
-    @GetMapping
-    public List<CompanyDTO> getAllCompanies() {
-        return companyService.getAllCompanies()
-                .stream().map(company -> modelMapper.map(company, CompanyDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * C1:
-     * @param id company id
-     * @return
-     */
+    //TODO: Pagination
     @GetMapping("/{id}")
     public ResponseEntity<CompanyDTO> getCompanyByPath(@PathVariable Long id) {
-        Company company = companyService.getCompanyByID(id);
-
-        CompanyDTO companyResponse = modelMapper.map(company, CompanyDTO.class);
-        return ResponseEntity.ok().body(companyResponse);
+        return getCompany(id);
     }
 
     @GetMapping(params = "id")
     public ResponseEntity<CompanyDTO> getCompanyByParam(@RequestParam Long id) {
-        Company company = companyService.getCompanyByID(id);
+        return getCompany(id);
+    }
 
-        CompanyDTO companyResponse = modelMapper.map(company, CompanyDTO.class);
-        return ResponseEntity.ok().body(companyResponse);
+    private ResponseEntity<CompanyDTO> getCompany(@PathVariable Long id) {
+        log.info(String.format("Getting company with id: %d"), id);
+        CompanyDTO companyDTO = companyService.getCompanyByID(id);
+        if (companyDTO == null) {
+            log.debug("CompanyDTO object is null.");
+            throw new ResourceNotFoundException("Cannot get company. Null return.");
+        }
+        return ResponseEntity.ok().body(companyDTO);
     }
 
     @PostMapping
-    public ResponseEntity<CompanyDTO> createComplaint(@RequestBody CompanyDTO companyDTO) {
-        Company companyRequest = modelMapper.map(companyDTO, Company.class);
-        Company company = companyService.createCompany(companyRequest);
-
-        CompanyDTO companyResponse = modelMapper.map(company, CompanyDTO.class);
-        return new ResponseEntity<CompanyDTO>(companyResponse, HttpStatus.CREATED);
+    public ResponseEntity<CompanyDTO> createCompany(@RequestBody CompanyDTO newCompanyDTO) {
+        log.info("Creating new company");
+        CompanyDTO companyDTO = companyService.createCompany(newCompanyDTO);
+        if (companyDTO == null) {
+            log.debug("CompanyDTO object is null.");
+            throw new ResourceNotFoundException("Cannot get company. Null return.");
+        }
+        return new ResponseEntity<CompanyDTO>(companyDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CompanyDTO> updateCompanyByPath(@PathVariable(name = "id") Long id, @RequestBody CompanyDTO companyDTO) {
-        Company companyRequest = modelMapper.map(companyDTO, Company.class);
-        Company company = companyService.updateCompany(id, companyRequest);
-
-        CompanyDTO companyResponse = modelMapper.map(company, CompanyDTO.class);
-        return new ResponseEntity<CompanyDTO>(companyResponse, HttpStatus.CREATED);
+    public ResponseEntity<CompanyDTO> updateCompanyByPath(@PathVariable(name = "id") Long id, @RequestBody CompanyDTO newCompanyDTO) {
+        return updateCompany(id, newCompanyDTO);
     }
 
     @PutMapping(params = "id")
-    public ResponseEntity<CompanyDTO> updateCompanyByParam(@RequestParam Long id, @RequestBody CompanyDTO companyDTO) {
-        Company companyRequest = modelMapper.map(companyDTO, Company.class);
-        Company company = companyService.updateCompany(id, companyRequest);
-
-        CompanyDTO companyResponse = modelMapper.map(company, CompanyDTO.class);
-        return new ResponseEntity<CompanyDTO>(companyResponse, HttpStatus.CREATED);
+    public ResponseEntity<CompanyDTO> updateCompanyByParam(@RequestParam Long id, @RequestBody CompanyDTO newCompanyDTO) {
+        return updateCompany(id, newCompanyDTO);
     }
 
-    //TODO: adding response to delete might be better
+    private ResponseEntity<CompanyDTO> updateCompany(@PathVariable(name = "id") Long id, @RequestBody CompanyDTO newCompanyDTO) {
+        log.info(String.format("Updating company with id: %d"), id);
+        CompanyDTO companyDTO = companyService.updateCompany(id, newCompanyDTO);
+        if (companyDTO == null) {
+            log.debug("CompanyDTO object is null.");
+            throw new ResourceNotFoundException("Cannot get company. Null return.");
+        }
+        return new ResponseEntity<CompanyDTO>(companyDTO, HttpStatus.ACCEPTED);
+    }
+
     @DeleteMapping("/{id}")
-    public void deleteCompanyByPath(@PathVariable(name = "id") Long id) {
-        companyService.deleteCompany(id);
+    public HttpStatus deleteCompanyByPath(@PathVariable(name = "id") Long id) {
+        return companyService.deleteCompany(id) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE;
     }
 
     @DeleteMapping(params = "id")
-    public void deleteCompanyByParam(@RequestParam Long id) {
-        companyService.deleteCompany(id);
+    public HttpStatus deleteCompanyByParam(@RequestParam Long id) {
+        return companyService.deleteCompany(id) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE;
     }
 }

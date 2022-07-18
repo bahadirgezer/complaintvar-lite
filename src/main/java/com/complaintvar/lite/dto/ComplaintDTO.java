@@ -2,13 +2,16 @@ package com.complaintvar.lite.dto;
 
 import com.complaintvar.lite.entity.User;
 import com.complaintvar.lite.entity.Company;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ComplaintDTO {
-    private Long id;
-    private String body;
-    private String title;
-    private User user;
-    private Company company;
+    Long id;
+    String body;
+    String title;
+    User user;
+    Company company;
 }

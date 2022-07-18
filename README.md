@@ -1,2 +1,2 @@
-# s_var-lite
+# complaintvar-lite
 Java Spring backend project for my internship
