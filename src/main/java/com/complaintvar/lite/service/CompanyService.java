@@ -22,11 +22,17 @@ import java.util.Optional;
 public class CompanyService {
     private final CompanyRepository companyRepository;
     //private final PasswordEncoder passwordEncoder;
-    @Autowired
-    private ModelMapper modelMapper;
+
+    private final ModelMapper modelMapper; //autowired yerine
 
     //TODO: Paginated get all and get some with sorting capabilities
 
+    /**
+     * IDsi verilen markanin bilgilerini getirir.
+     *
+     * @param id    company id
+     * @return  istenen companyDTO objesi
+     */
     public CompanyDTO getCompanyByID(Long id) {
         log.info("Getting company by ID.");
         Company company;

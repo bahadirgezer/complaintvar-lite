@@ -36,7 +36,7 @@ public class ComplaintController {
     }
 
     private ResponseEntity<ComplaintDTO> getComplaint(@PathVariable Long id) {
-        log.info(String.format("Getting complaint with id: %d"), id);
+        log.info(String.format("Getting complaint with id: %d", id));
         ComplaintDTO complaintDTO = complaintService.getComplaintByID(id);
         if (complaintDTO == null) {
             log.debug("ComplaintDTO object is null.");
@@ -61,7 +61,7 @@ public class ComplaintController {
         return updateComplaint(id, newComplaintDTO);
     }
 
-    @PutMapping(params = "id")
+    @PutMapping
     public ResponseEntity<ComplaintDTO> updateComplaintByParam(@RequestParam Long id, @RequestBody ComplaintDTO newComplaintDTO) {
         return updateComplaint(id, newComplaintDTO);
     }

@@ -38,5 +38,4 @@ public class User {
 
     @Column
     private String password;
-    //TODO: pass password on different call?
 }

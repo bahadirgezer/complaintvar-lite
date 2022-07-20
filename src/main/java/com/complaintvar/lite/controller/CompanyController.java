@@ -20,6 +20,12 @@ public class CompanyController {
     private final CompanyService companyService;
 
     //TODO: Pagination
+
+    /**
+     * C1: (company 1) bir sonraki company 2 olacak.
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CompanyDTO> getCompanyByPath(@PathVariable Long id) {
         return getCompany(id);
@@ -31,7 +37,7 @@ public class CompanyController {
     }
 
     private ResponseEntity<CompanyDTO> getCompany(@PathVariable Long id) {
-        log.info(String.format("Getting company with id: %d"), id);
+        log.info(String.format("Getting company with id: %d", id));
         CompanyDTO companyDTO = companyService.getCompanyByID(id);
         if (companyDTO == null) {
             log.debug("CompanyDTO object is null.");

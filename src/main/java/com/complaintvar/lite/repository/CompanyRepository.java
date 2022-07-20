@@ -13,4 +13,9 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Company findCompanyByEmail(String email);
     @Query(value = "UPDATE sikayetvar_lite.company SET sikayetvar_lite.company.verified=true WHERE *", nativeQuery = true)
     void updateEveryVerification(Boolean verification);
+
+    // method yaz @Query olmadan.
 }
+// transaction aciliyor, native query icin ozellikle mudahale gerekebilir.
+// select, (get) methodlari native methodlarda problem yok.
+// create your own repository method.

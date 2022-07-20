@@ -30,7 +30,7 @@ public class UserController {
     }
 
     private ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
-        log.info(String.format("Getting user with id: %d"), id);
+        log.info(String.format("Getting user with id: %d", id));
         UserDTO userDTO = userService.getUserByID(id);
         if (userDTO == null) {
             log.debug("UserDTO object is null.");
