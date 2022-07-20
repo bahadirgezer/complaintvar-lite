@@ -87,6 +87,85 @@ public class CompanyService {
         return modelMapper.map(savedCompany, CompanyDTO.class);
     }
 
+    public CompanyDTO updateEmail(Long id, String newEmail) {
+        log.info("Updating company email.");
+        log.debug("Converting company DTO to company entitiy.");
+        Company company;
+
+        try {
+            company = companyRepository.findCompanyByID(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("Database query exception caught.");
+            return null;
+        }
+
+        if (newEmail.isBlank()) {
+            log.debug("Company name is blank. Illegal format");
+            throw new IllegalResourceFormatException("Company email cannot be blank.");
+        }
+
+        Company emailCheck;
+        try {
+            emailCheck = companyRepository.findCompanyByID(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("Database query exception caught.");
+            return null;
+        }
+        if (emailCheck != null) {
+            if (emailCheck.getId() != company.getId()) {
+                log.debug("Company update failed. Email in use.");
+                throw new DuplicateEntityError("Email already in use, cannot update company.");
+            }
+        }
+        company.setEmail(newEmail);
+
+        Company savedCompany;
+        try {
+            savedCompany = companyRepository.save(company);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("Database query exception caught.");
+            return null;
+        }
+
+        log.debug(String.format("Returning company DTO with ID: %d", savedCompany.getId()));
+        return modelMapper.map(savedCompany, CompanyDTO.class);
+    }
+
+    public CompanyDTO updateName(Long id, String newName) {
+        log.info("Updating company name.");
+        log.debug("Converting company DTO to company entitiy.");
+        Company company;
+
+        try {
+            company = companyRepository.findCompanyByID(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("Database query exception caught.");
+            return null;
+        }
+
+        if (newName.isBlank()) {
+            log.debug("Company name is blank. Illegal format");
+            throw new IllegalResourceFormatException("Company name cannot be blank.");
+        }
+        company.setName(newName);
+
+        Company savedCompany;
+        try {
+            savedCompany = companyRepository.save(company);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("Database query exception caught.");
+            return null;
+        }
+
+        log.debug(String.format("Returning company DTO with ID: %d", savedCompany.getId()));
+        return modelMapper.map(savedCompany, CompanyDTO.class);
+    }
+
     public CompanyDTO updateCompany(Long id, CompanyDTO companyDTO) {
         log.info("Updating company");
         log.debug("Converting company DTO to company entity.");
@@ -124,8 +203,10 @@ public class CompanyService {
             }
 
             if (checkEmail != null) {
-                log.debug("Company update failed. Email in use.");
-                throw new DuplicateEntityError("Email already in use, cannot update company.");
+                if (checkEmail.getId() != company.getId()) {
+                    log.debug("Company update failed. Email in use.");
+                    throw new DuplicateEntityError("Email already in use, cannot update company.");
+                }
             }
         }
         company.setEmail(newCompany.getEmail());

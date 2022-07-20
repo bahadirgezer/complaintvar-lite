@@ -61,8 +61,30 @@ public class CompanyController {
         return updateCompany(id, newCompanyDTO);
     }
 
+    @PutMapping(params = {"id", "email"})
+    public ResponseEntity<CompanyDTO> updateCompanyEmail(@RequestParam Long id, @RequestParam String email) {
+        log.info(String.format("Updating company email of id: %d", id));
+        CompanyDTO companyDTO = companyService.updateEmail(id, email);
+        if (companyDTO == null) {
+            log.debug("CompanyDTO object is null");
+            throw new ResourceNotFoundException("Cannot get company. Null return.");
+        }
+        return new ResponseEntity<CompanyDTO>(companyDTO, HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping(params = {"id", "name"})
+    public ResponseEntity<CompanyDTO> updateCompanyName(@RequestParam Long id, @RequestParam String name) {
+        log.info(String.format("Updating company name of id: %d", id));
+        CompanyDTO companyDTO = companyService.updateName(id, name);
+        if (companyDTO == null) {
+            log.debug("CompanyDTO object is null");
+            throw new ResourceNotFoundException("Cannot get company. Null return.");
+        }
+        return new ResponseEntity<CompanyDTO>(companyDTO, HttpStatus.ACCEPTED);
+    }
+
     private ResponseEntity<CompanyDTO> updateCompany(@PathVariable(name = "id") Long id, @RequestBody CompanyDTO newCompanyDTO) {
-        log.info(String.format("Updating company with id: %d"), id);
+        log.info(String.format("Updating company with id: %d", id));
         CompanyDTO companyDTO = companyService.updateCompany(id, newCompanyDTO);
         if (companyDTO == null) {
             log.debug("CompanyDTO object is null.");

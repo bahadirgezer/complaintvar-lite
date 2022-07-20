@@ -4,9 +4,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.*;
-//import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.*;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,18 +21,11 @@ public class LiteApplication {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        Map encoders = new HashMap<>();
-//        encoders.put("bcrypt", new BCryptPasswordEncoder());
-//        encoders.put("noop", NoOpPasswordEncoder.getInstance());
-//        encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
-//        encoders.put("scrypt", new SCryptPasswordEncoder());
-//        encoders.put("sha256", new StandardPasswordEncoder());
-//        PasswordEncoder passwordEncoder =
-//                new DelegatingPasswordEncoder("bcrypt", encoders);
-//        return passwordEncoder;
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(LiteApplication.class, args);
     }

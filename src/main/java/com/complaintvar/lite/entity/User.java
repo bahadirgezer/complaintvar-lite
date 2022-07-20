@@ -36,7 +36,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Complaint> complaints = new HashSet<Complaint>();
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column
     private String password;
     //TODO: pass password on different call?
 }

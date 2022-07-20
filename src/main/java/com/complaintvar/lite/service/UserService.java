@@ -15,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,25 +26,12 @@ import java.util.*;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-//public class UserService implements UserDetailsService {
 public class UserService {
     private final UserRepository userRepository;
-    //private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private ModelMapper modelMapper;
-
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findUserByEmail(username);
-//        if (user == null) {
-//            throw new IllegalArgumentException();
-//        }
-//
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getEmail(),
-//                user.getPassword(),
-//                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
-//    }
 
     //TODO: Paginated get all and get some with sorting capabilities
 
@@ -90,6 +81,7 @@ public class UserService {
             log.debug("Email in use by another user.");
             throw new DuplicateEntityError(String.format("Email \"%s\" already in use. Emails must be unique,", emailCheck.getEmail()));
         }
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         User savedUser;
         try {
