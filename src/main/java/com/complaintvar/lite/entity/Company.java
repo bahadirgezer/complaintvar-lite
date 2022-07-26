@@ -30,9 +30,6 @@ public class Company {
     @Column(nullable = false, unique = false)
     private String name;
 
-    @Column
-    private Boolean verified;
-
     @JsonIgnore //recursive problem
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "company")
     private Set<Complaint> complaints = new HashSet<Complaint>();

@@ -11,13 +11,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Slf4j
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CompanyService {
     private final CompanyRepository companyRepository;
@@ -52,6 +59,14 @@ public class CompanyService {
         }
 
         log.debug(String.format("Returning company DTO with ID: %d", id));
+//        CompanyDTO companyDTO = () ->
+//                new CompanyDTO(
+//                        company.getId(),
+//                        company.getEmail(),
+//                        company.getName(),
+//                        false);
+//        return companyDTO;
+
         return modelMapper.map(company, CompanyDTO.class);
     }
 
@@ -267,5 +282,33 @@ public class CompanyService {
 
     public void updateEveryVerification(Boolean verification) {
         companyRepository.updateEveryVerification(verification);
+    }
+
+    public List<CompanyDTO> getPaginatedCompanies(Integer page, String large, String sortBy, String order) {
+        Sort sort = null;
+        if (!sortBy.isBlank()) {
+            ;
+            if (order.equalsIgnoreCase("asc")) {
+                sort = Sort.by(sortBy).ascending();
+            } else if (order.equalsIgnoreCase("desc")){
+                sort = Sort.by(sortBy).descending();
+            }
+        }
+        if (sort == null) {
+            sort = Sort.by("id");
+        }
+
+        Pageable pageable = PageRequest.of(page,
+                (large.equalsIgnoreCase("true")) ? 5 : 2,
+                sort);
+
+        Page<Company> pagedResult =  companyRepository.findAll(pageable);
+
+        if (pagedResult.hasContent()) {
+            return pagedResult.getContent().stream()
+                    .map(company -> modelMapper.map(company, CompanyDTO.class))
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<CompanyDTO>();
     }
 }

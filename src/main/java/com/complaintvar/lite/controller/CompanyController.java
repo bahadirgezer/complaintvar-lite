@@ -5,11 +5,16 @@ import com.complaintvar.lite.exceptions.ResourceNotFoundException;
 import com.complaintvar.lite.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Locale;
 
 @Slf4j
@@ -20,6 +25,16 @@ public class CompanyController {
     private final CompanyService companyService;
 
     //TODO: Pagination
+    @GetMapping
+    public ResponseEntity<List<CompanyDTO>> getPaginatedCompanies(
+            @RequestParam Integer page,
+            @RequestParam(required = false, defaultValue = "false") String large,
+            @RequestParam(name = "sort", required = false, defaultValue = "") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") String order) {
+        List<CompanyDTO> companies = companyService.getPaginatedCompanies(page, large, sortBy, order);
+
+        return ResponseEntity.ok().body(companies);
+    }
 
     /**
      * C1: (company 1) bir sonraki company 2 olacak.
