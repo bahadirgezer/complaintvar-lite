@@ -23,22 +23,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class CompanyService {
     private final CompanyRepository companyRepository;
-    //private final PasswordEncoder passwordEncoder;
-
     private final ModelMapper modelMapper; //autowired yerine
 
     //TODO: Paginated get all and get some with sorting capabilities
 
     /**
-     * IDsi verilen markanin bilgilerini getirir.
+     * Gets the company with the given ID.
      *
-     * @param id    company id
-     * @return  istenen companyDTO objesi
+     * @param id ID of the company
+     * @return company DTO of the fetched company
      */
     public CompanyDTO getCompanyByID(Long id) {
         log.info("Getting company by ID.");
@@ -59,17 +57,18 @@ public class CompanyService {
         }
 
         log.debug(String.format("Returning company DTO with ID: %d", id));
-//        CompanyDTO companyDTO = () ->
-//                new CompanyDTO(
-//                        company.getId(),
-//                        company.getEmail(),
-//                        company.getName(),
-//                        false);
-//        return companyDTO;
-
-        return modelMapper.map(company, CompanyDTO.class);
+        return new CompanyDTO(company.getId(),
+                        company.getEmail(),
+                        company.getName());
+        //return modelMapper.map(company, CompanyDTO.class);
     }
 
+    /**
+     * Creates a new company from the companyDTO parameter.
+     *
+     * @param companyDTO company for creation
+     * @return company DTO object saved to the database
+     */
     public CompanyDTO createCompany(CompanyDTO companyDTO) {
         log.info("Creating company.");
         log.debug("Converting company DTO to company entity.");
@@ -108,6 +107,13 @@ public class CompanyService {
         return modelMapper.map(savedCompany, CompanyDTO.class);
     }
 
+    /**
+     * Updates the email of the company.
+     *
+     * @param id ID of the company for the update
+     * @param newEmail updated email
+     * @return company DTO object saved to the database
+     */
     public CompanyDTO updateEmail(Long id, String newEmail) {
         log.info("Updating company email.");
         log.debug("Converting company DTO to company entitiy.");
@@ -155,6 +161,13 @@ public class CompanyService {
         return modelMapper.map(savedCompany, CompanyDTO.class);
     }
 
+    /**
+     * Updates the name of the company.
+     *
+     * @param id ID of the company for the update
+     * @param newName updated name
+     * @return company DTO object saved to the database
+     */
     public CompanyDTO updateName(Long id, String newName) {
         log.info("Updating company name.");
         log.debug("Converting company DTO to company entitiy.");
@@ -187,6 +200,13 @@ public class CompanyService {
         return modelMapper.map(savedCompany, CompanyDTO.class);
     }
 
+    /**
+     * Updates the company -specified by the ID- with the new company DTO
+     *
+     * @param id ID of the company to be updated
+     * @param companyDTO new company DTO
+     * @return company DTO of the company saved to the database
+     */
     public CompanyDTO updateCompany(Long id, CompanyDTO companyDTO) {
         log.info("Updating company");
         log.debug("Converting company DTO to company entity.");
@@ -280,10 +300,29 @@ public class CompanyService {
         return true;
     }
 
-    public void updateEveryVerification(Boolean verification) {
-        companyRepository.updateEveryVerification(verification);
+    /**
+     * Gets a list of companies which start with the give string.
+     * @param id the
+     */
+    public List<CompanyDTO> getCompaniesWithIdLowerThan(Long id) {
+        List<Company> companies = companyRepository.getIdLowerThan(id);
+        if (companies.isEmpty()) {
+            throw new ResourceNotFoundException("No such company.");
+        }
+        return companies.stream()
+                .map(company -> modelMapper.map(company, CompanyDTO.class))
+                .collect(Collectors.toList());
     }
 
+    /**
+     * Gets a list of companies with pagination.
+     *
+     * @param page page number [0, maxPage] (Required)
+     * @param large page size ["true"|"false"]
+     * @param sortBy field name to sort by
+     * @param order page order ["asc"|"desc"]
+     * @return list of company DTOs in the requested page
+     */
     public List<CompanyDTO> getPaginatedCompanies(Integer page, String large, String sortBy, String order) {
         Sort sort = null;
         if (!sortBy.isBlank()) {
@@ -301,12 +340,13 @@ public class CompanyService {
         Pageable pageable = PageRequest.of(page,
                 (large.equalsIgnoreCase("true")) ? 5 : 2,
                 sort);
-
         Page<Company> pagedResult =  companyRepository.findAll(pageable);
 
         if (pagedResult.hasContent()) {
             return pagedResult.getContent().stream()
-                    .map(company -> modelMapper.map(company, CompanyDTO.class))
+                    .map(company -> new CompanyDTO(company.getId(),
+                            company.getEmail(),
+                            company.getName()))
                     .collect(Collectors.toList());
         }
         return new ArrayList<CompanyDTO>();

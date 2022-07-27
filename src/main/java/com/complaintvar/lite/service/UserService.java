@@ -1,6 +1,8 @@
 package com.complaintvar.lite.service;
 
+import com.complaintvar.lite.dto.CompanyDTO;
 import com.complaintvar.lite.dto.UserDTO;
+import com.complaintvar.lite.entity.Company;
 import com.complaintvar.lite.entity.User;
 import com.complaintvar.lite.exceptions.DuplicateEntityError;
 import com.complaintvar.lite.exceptions.IllegalResourceFormatException;
@@ -22,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -191,5 +194,15 @@ public class UserService {
         }
 
         return true;
+    }
+
+    public List<UserDTO> getUserWithFirstAndLastName(String firstName, String lastName) {
+        List<User> users = userRepository.findByFirstNameAndLastNameAndPasswordNotNull(firstName, lastName);
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No such user.");
+        }
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());
     }
 }

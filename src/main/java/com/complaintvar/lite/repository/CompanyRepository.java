@@ -4,6 +4,7 @@ import com.complaintvar.lite.entity.Company;
 import com.complaintvar.lite.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +14,8 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Company findCompanyByID(Long Id);
     @Query("SELECT co FROM Company co WHERE co.email=?1")
     Company findCompanyByEmail(String email);
-    @Query(value = "UPDATE sikayetvar_lite.company SET sikayetvar_lite.company.verified=true WHERE *", nativeQuery = true)
-    void updateEveryVerification(Boolean verification);
+    @Query(value = "SELECT * FROM company as co WHERE co.id < :q_id", nativeQuery = true)
+    List<Company> getIdLowerThan(@Param("q_id") Long id);
 }
 // transaction aciliyor, native query icin ozellikle mudahale gerekebilir.
 // select, (get) methodlari native methodlarda problem yok.

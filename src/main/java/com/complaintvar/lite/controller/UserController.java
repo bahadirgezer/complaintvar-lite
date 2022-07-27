@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -79,5 +81,12 @@ public class UserController {
     @DeleteMapping(params = "id")
     public HttpStatus deleteUserByParam(@RequestParam Long id) {
         return userService.deleteUser(id) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE;
+    }
+
+    @GetMapping(path = "/{first}/{last}")
+    public ResponseEntity<List<UserDTO>> getUsersByFirstAndLastName(@PathVariable String first,
+                                                                    @PathVariable String last) {
+        List<UserDTO> users = userService.getUserWithFirstAndLastName(first, last);
+        return ResponseEntity.ok().body(users);
     }
 }
